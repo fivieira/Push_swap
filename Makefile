@@ -31,7 +31,7 @@ CC = gcc
 
 RM = rm -f
 
-CFLAGS = -Wall -Wextra -Werror -Iheaders/
+CFLAGS = -Wall -Wextra -Werror -Iincludes/
 
 MAKE = make -C
 
