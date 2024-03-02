@@ -12,69 +12,97 @@
 
 #include "libft.h"
 
-static int	count_words(const char *str, char c)
+static int	ft_count_words(char const *str, char c)
 {
+	int	i;
 	int	count;
-	int	trigger;
 
+	i = 0;
 	count = 0;
-	trigger = 0;
-	while (*str)
+	while (str[i] != '\0')
 	{
-		if (*str != c && trigger == 0)
+		if (str[i] == c)
+			i++;
+		else
 		{
-			trigger = 1;
 			count++;
+			while (str[i] && str[i] != c)
+				i++;
 		}
-		else if (*str == c)
-			trigger = 0;
-		str++;
 	}
 	return (count);
 }
 
-static char	*word_dup(const char *str, int start, int finish)
+	/*
+	Takes a word and a string, and puts the word in the string starting
+	from index i and for word_len (length of the word) characters, then
+	returns the resulting string.
+	*/
+static char	*ft_putword(char *word, char const *s, int i, int word_len)
 {
-	char	*word;
-	int		i;
+	int	j;
 
-	i = 0;
-	word = malloc((finish - start + 1) * sizeof(char));
-	while (start < finish)
-		word[i++] = str[start++];
-	word[i] = '\0';
+	j = 0;
+	while (word_len > 0)
+	{
+		word[j] = s[i - word_len];
+		j++;
+		word_len--;
+	}
+	word[j] = '\0';
 	return (word);
 }
 
-char	**ft_split(char const *s, char c)
-{
-	size_t	i;
-	size_t	j;
-	int		index;
-	char	**split;
+	/*
+	Splits a string into an array of substrings based
+	on a delimiter character, and returns the array of substrings.
+	*/
 
-	split = malloc((count_words(s, c) + 1) * sizeof(char *));
-	if (!s || !split)
-		return (0);
+static char	**ft_split_words(char const *s, char c, char **s2, int num_words)
+{
+	int	i;
+	int	word;
+	int	word_len;
+
 	i = 0;
-	j = 0;
-	index = -1;
-	while (i <= ft_strlen(s))
+	word = 0;
+	word_len = 0;
+	while (word < num_words)
 	{
-		if (s[i] != c && index < 0)
-			index = i;
-		else if ((s[i] == c || i == ft_strlen(s)) && index >= 0)
+		while (s[i] && s[i] == c)
+			i++;
+		while (s[i] && s[i] != c)
 		{
-			split[j++] = word_dup(s, index, i);
-			index = -1;
+			i++;
+			word_len++;
 		}
-		i++;
+		s2[word] = (char *)malloc(sizeof(char) * (word_len + 1));
+		if (!s2)
+			return (0);
+		ft_putword(s2[word], s, i, word_len);
+		word_len = 0;
+		word++;
 	}
-	split[j] = 0;
-	return (split);
+	s2[word] = 0;
+	return (s2);
 }
 
-// int main(void)
-// {
+	/*
+	This function splits a string into words based on a given
+	delimiter character and returns an array of pointers to those words.
+	*/
 
-// }
+char	**ft_split(char const *s, char c)
+{
+	char			**s2;
+	unsigned int	num_words;
+
+	if (!s)
+		return (0);
+	num_words = ft_count_words(s, c);
+	s2 = (char **)malloc(sizeof(char *) * (num_words + 1));
+	if (!s2)
+		return (0);
+	ft_split_words(s, c, s2, num_words);
+	return (s2);
+}

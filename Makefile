@@ -12,18 +12,18 @@
 
 NAME = push_swap
 
-SRC = sources/so_long.c sources/map.c sources/graphics.c sources/errors.c sources/controls.c sources/check_format.c
+SRC = source/handle_error.c source/push_swap.c source/init_stack_a_b.c source/init_stack_b_a.c source/stack_unit.c source/stack_utils.c source/split.c
 
-COMMANDS:=  commands/push.c \
-			commands/rev_rotate.c \
-			commands/rotate.c \
-			commands/sort_stacks.c \
-			commands/sort_3.c \
-			commands/swap.c
+COMMANDS:=  source/commands/push.c \
+			source/commands/rev_rotate.c \
+			source/commands/rotate.c \
+			source/commands/sort_stacks.c \
+			source/commands/sort_3.c \
+			source/commands/swap.c 
 
 OBJS = ${SRC:.c=.o}
 
-
+OBJS_COMMANDS = ${COMMANDS:.c=.o}
 
 #INCLUDE = -I .
 
@@ -42,15 +42,13 @@ FT_PRINTF = ${FT_PRINTF_PATH}/libftprintf.a
 all:	${NAME}
 
 
-$(NAME): ${OBJS} ${OBJS_GETNEXTLINE}
+$(NAME): ${OBJS} ${OBJS_COMMANDS}
 		$(MAKE) $(FT_PRINTF_PATH) 
-
-		$(CC) $(CFLAGS) $(SRC) $(GETNEXTLINE) $(LIBRARY) -o $(NAME) $(FT_PRINTF)
+		$(CC) $(CFLAGS) $(SRC) $(COMMANDS) -o $(NAME) $(FT_PRINTF)
 
 clean:
 		${MAKE} ${FT_PRINTF_PATH} clean
-
-		${RM} ${OBJS} ${OBJS_GETNEXTLINE}
+		${RM} ${OBJS} ${OBJS_COMMANDS}
 
 
 fclean: clean

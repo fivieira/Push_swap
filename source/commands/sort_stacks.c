@@ -81,7 +81,7 @@ void	sort_stacks(t_stack_node **a, t_stack_node **b) //Define a function that so
 		init_nodes_a(*a, *b); //Iniate all nodes from both stacks
 		move_a_to_b(a, b); //Move the cheapest `a` nodes into a sorted stack `b`, until three nodes are left in stack `a`
 	}
-	sort_three(a);
+	sort_3(a);
 	while (*b) //Until the end of stack `b` is reached
 	{
 		init_nodes_b(*a, *b); //Initiate all nodes from both stacks

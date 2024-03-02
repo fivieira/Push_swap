@@ -1,4 +1,4 @@
-#include "../../includes/push_swap.h"
+#include "../includes/push_swap.h"
 
 int	stack_len(t_stack_node *stack) //Define a function that calculates and returns the length of a stack
 {

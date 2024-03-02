@@ -1,4 +1,4 @@
-#include "../../includes/push_swap.h"
+#include "../includes/push_swap.h"
 
 static long	ft_atol(const char *s) //Define a function that converts every string into a long value
 {
@@ -28,7 +28,7 @@ static void	append_node(t_stack_node **stack, int n) //Define a function that se
 
 	if (!stack)
 		return ;
-	node = malloc(sizeof(t_stack_node)); //Allocate memory for the new node
+	node = (t_stack_node *)malloc(sizeof(t_stack_node)); //Allocate memory for the new node
 	if (!node)
 		return ;
 	node->next = NULL; //Set the next pointer of the new node to NULL because it will be the last node in the list
