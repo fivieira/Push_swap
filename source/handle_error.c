@@ -34,14 +34,17 @@ int	error_duplicate(t_stack_node *a, int n) //Define a function that checks for 
 void	free_stack(t_stack_node **stack) //Define a function to free a stack if there are errors
 {
 	t_stack_node	*tmp; //To store the next node in the stack before the current node is freed, because once a node is freed, you can't access its next pointer
+	t_stack_node	*current;
 
 	if (!stack) //Check for an empty stack
 		return ;
-	while (*stack) //As long as a node exist in the stack
+	current = *stack;
+	while (current) //As long as a node exist in the stack
 	{
-		tmp = *stack; //Assign to `tmp` the pointer to the next node
-		*stack = (*stack)->next; 
-		free(tmp); 
+		tmp = current->next; //Assign to `tmp` the pointer to the next node
+		current->nbr = 0; //Assigning the node to `0` before freeing is not strictly necessary but it can help catch potential bugs such as memory-leaks and improve debugging
+		free(current); //Free the current node, deallocating the memory occupied by that node
+		current = tmp; //Assign `tmp` as the current first node
 	}
 	*stack = NULL;
 }

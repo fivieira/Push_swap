@@ -12,36 +12,46 @@
 
 #include "../includes/push_swap.h"
 
+void free_split_result(char **split_result) {
+    int i = 0;
+    while (split_result[i]) {
+        free(split_result[i]);
+        i++;
+    }
+    free(split_result);
+}
+
 int	main(int ac, char **av) //Define a program that takes in a random input if numbers and sorts them in ascending order
 {
-	t_stack_node	*a; //To store a pointer to stack `a`
-	t_stack_node	*b; //To store a pointer to stack `b`
+    t_stack_node *a = NULL;
+    t_stack_node *b = NULL;
 
-	a = NULL; //Set both pointers to NULL to avoid undefined behaviour
-	b = NULL;
-	if (ac == 1 || (ac == 2 && !av[1][0])) //Check for incorrect argument counts or if the 2 argument is `0`
-		return (1);
-	else if (ac == 2) //Check if the argument count is 2 and the 2nd is not empty, this implies a string
-		av = split(av[1], ' '); //Call split() to extract each substring
-	init_stack_a(&a, av + 1); //Initiate stack `a`, which also handles errors
+    if (ac == 1 || (ac == 2 && !av[1][0])) {
+        // Verifica se não há argumentos ou se o único argumento é vazio
+        return (1);
+    } else if (ac == 2) {
+        // Trata o caso em que há apenas um argumento (sem aspas)
+        char *arg = av[1];
+        char **split_result = split(arg, ' '); // Chama a função split para extrair cada substring
+        init_stack_a(&a, split_result); // Inicializa a pilha "a" com as substrings
 
-	        // Libera a memória alocada para cada substring
-        int i = 0;
-        while (av[i]) {
-            free(av[i]);
-            i++;
-        }
         // Libera a memória alocada para o array de substrings
-        free(av);
-	if (!stack_sorted(a)) //Check if the stack is not sorted
-	{
-		if (stack_len(a) == 2) //If not, and there are two numbers, swap the first two nodes
-			sa(&a, false);
-		else if (stack_len(a) == 3) //If not, and there are three numbers, call the sort three algorithm
-			sort_3(&a);
-		else
-			sort_stacks(&a, &b); //If not, and there are more than three numbers, call the sort stacks algorithm
-	}
-	free_stack(&a); //Clean up the stack
-	return (0);
+        free_split_result(split_result);
+    } else {
+        // Trata o caso em que há mais de um argumento
+        init_stack_a(&a, av + 1); // Inicializa a pilha "a" com os argumentos
+    }
+
+    if (!stack_sorted(a)) {
+        if (stack_len(a) == 2) {
+            sa(&a, false);
+        } else if (stack_len(a) == 3) {
+            sort_3(&a);
+        } else {
+            sort_stacks(&a, &b);
+        }
+    }
+
+    free_stack(&a); // Libera a memória alocada para a pilha "a"
+    return (0);
 }
