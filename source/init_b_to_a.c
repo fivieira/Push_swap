@@ -1,5 +1,4 @@
 #include "../includes/push_swap.h"
-
 static void	set_target_b(t_stack_node *a, t_stack_node *b) //Define a function that sets for the current `a` node, its target node from stack `a`
 {
 	t_stack_node	*current_a; //To store the pointer to the current `a` node

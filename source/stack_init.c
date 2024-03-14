@@ -23,27 +23,32 @@ static long	ft_atol(const char *s) //Define a function that converts every strin
 
 static void	append_node(t_stack_node **stack, int n) //Define a function that searches for the last node to append to the linked list
 {
-	t_stack_node	*node; //To store a pointer to the new node to be created with the value `n`
-	t_stack_node	*last_node; //To store a pointer to the current last node of the stack
+	t_stack_node	*node; // Para armazenar um ponteiro para o novo nó a ser criado com o valor `n`
+	t_stack_node	*last_node; // Para armazenar um ponteiro para o último nó atual da pilha
 
 	if (!stack)
 		return ;
-	node = (t_stack_node *)malloc(sizeof(t_stack_node)); //Allocate memory for the new node
+	node = malloc(sizeof(t_stack_node)); // Aloca memória para o novo nó
 	if (!node)
 		return ;
-	node->next = NULL; //Set the next pointer of the new node to NULL because it will be the last node in the list
-	node->nbr = n; //Set the `next` data of of the new node to `n` value
-	if (!(*stack)) //Check if the stack is empty or currently pointing to NULL, indicating a first node needs to be found
+
+	node->nbr = n; // Define o valor do número
+	node->cheapest = false; // Inicializa o campo `cheapest` como false
+	node->above_median = false; // Inicializa o campo `above_median` como false
+
+	node->next = NULL; // Define o ponteiro next do novo nó como NULL, pois ele será o último nó na lista
+	if (!(*stack)) // Verifica se a pilha está vazia ou atualmente apontando para NULL, indicando que um primeiro nó precisa ser encontrado
 	{
-		*stack = node; //If empty, update the pointer *stack to point to the node, effectively making it the new head of the linked list
-		node->prev = NULL; //Set the head node's previous pointer to NULL as it's the first node
+		*stack = node; // Se estiver vazia, atualiza o ponteiro *stack para apontar para o nó, efetivamente tornando-o a nova cabeça da lista encadeada
+		node->prev = NULL; // Define o ponteiro anterior do nó cabeça como NULL, pois é o primeiro nó
 	}
-	else //If the stack is not empty, it means there are existing nodes in the linked list
+	else // Se a pilha não estiver vazia, significa que existem nós existentes na lista encadeada
 	{
-		last_node = find_last(*stack); //In which case, find the last node
-		last_node->next = node; //Append the new node to the last node
-		node->prev = last_node; //Update the previous pointer of the new node and complete the appending
+		last_node = find_last(*stack); // Neste caso, encontra o último nó
+		last_node->next = node; // Anexa o novo nó ao último nó
+		node->prev = last_node; // Atualiza o ponteiro anterior do novo nó e completa a anexação
 	}
+	
 }
 
 void	init_stack_a(t_stack_node **a, char **argv) //Define a function that initiates stack `a` by handling any errors and appending required nodes to complete a stack
@@ -68,15 +73,16 @@ void	init_stack_a(t_stack_node **a, char **argv) //Define a function that initia
 
 t_stack_node	*get_cheapest(t_stack_node *stack) //Define a function that searches for the cheapest node, that is set by bool
 {
-	if (!stack)
-		return (NULL);
-	while (stack)
-	{
-		if (stack->cheapest)
-			return (stack);
-		stack = stack->next;
-	}
-	return (NULL);
+    if (!stack)
+        return (NULL);
+
+    while (stack)
+    {
+        if (stack->cheapest)
+            return (stack);
+        stack = stack->next;
+    }
+    return (NULL);
 }
 
 void	prep_for_push(t_stack_node **stack,

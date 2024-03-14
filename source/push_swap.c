@@ -1,57 +1,42 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   so_long.h                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: fivieira <fivieira@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/7 15:12:57 by fivieira          #+#    #+#             */
-/*   Updated: 2023/12/14 15:51:23 by fivieira         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../includes/push_swap.h"
 
 void free_split_result(char **split_result) {
-    int i = 0;
-    while (split_result[i]) {
-        free(split_result[i]);
-        i++;
+    char **current_word = split_result;
+    while (*current_word) {
+        free(*current_word); // Libera a memória alocada para cada palavra individual
+        current_word++;
     }
-    free(split_result);
+    free(split_result); // Libera a memória alocada para o array de strings
 }
 
-int	main(int ac, char **av) //Define a program that takes in a random input if numbers and sorts them in ascending order
+int	main(int argc, char **argv) //Define a program that takes in a random input if numbers and sorts them in ascending order
 {
-    t_stack_node *a = NULL;
-    t_stack_node *b = NULL;
+	t_stack_node	*a; //To store a pointer to stack `a`
+	t_stack_node	*b; //To store a pointer to stack `b`
 
-    if (ac == 1 || (ac == 2 && !av[1][0])) {
-        // Verifica se não há argumentos ou se o único argumento é vazio
-        return (1);
-    } else if (ac == 2) {
-        // Trata o caso em que há apenas um argumento (sem aspas)
-        char *arg = av[1];
-        char **split_result = split(arg, ' '); // Chama a função split para extrair cada substring
-        init_stack_a(&a, split_result); // Inicializa a pilha "a" com as substrings
-
-        // Libera a memória alocada para o array de substrings
-        free_split_result(split_result);
-    } else {
-        // Trata o caso em que há mais de um argumento
-        init_stack_a(&a, av + 1); // Inicializa a pilha "a" com os argumentos
-    }
-
-    if (!stack_sorted(a)) {
-        if (stack_len(a) == 2) {
-            sa(&a, false);
-        } else if (stack_len(a) == 3) {
-            sort_3(&a);
-        } else {
-            sort_stacks(&a, &b);
+	a = NULL; //Set both pointers to NULL to avoid undefined behaviour
+	b = NULL;
+    if (argc == 1 || (argc == 2 && !argv[1][0])) {
+        return 1; // Tratar caso de argumentos inválidos
+    } else if (argc == 2) {
+        argv = split(argv[1], ' '); // Dividir os argumentos se necessário
+        if (!argv) {
+            return 1; // Tratar erro de alocação de memória
         }
+        init_stack_a(&a, argv + 1); // Inicializar a pilha 'a' com os argumentos
+        free_split_result(argv); // Liberar memória alocada para os resultados do split
+    } else {
+        init_stack_a(&a, argv + 1); // Inicializar a pilha 'a' com os argumentos
     }
-
-    free_stack(&a); // Libera a memória alocada para a pilha "a"
-    return (0);
+	if (!stack_sorted(a)) //Check if the stack is not sorted
+	{
+		if (stack_len(a) == 2) //If not, and there are two numbers, swap the first two nodes
+			sa(&a, false);
+		else if (stack_len(a) == 3) //If not, and there are three numbers, call the sort three algorithm
+			sort_three(&a);
+		else
+			sort_stacks(&a, &b); //If not, and there are more than three numbers, call the sort stacks algorithm
+	}
+	free_stack(&a); //Clean up the stack
+	return (0);
 }

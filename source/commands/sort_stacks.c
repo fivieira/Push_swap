@@ -1,16 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   so_long.h                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: fivieira <fivieira@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/7 15:12:57 by fivieira          #+#    #+#             */
-/*   Updated: 2023/12/14 15:51:23 by fivieira         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "../../includes/push_swap.h"
+#include "../includes/push_swap.h"
 
 static void	rotate_both(t_stack_node **a,
 						t_stack_node **b,
@@ -38,7 +26,14 @@ static void	move_a_to_b(t_stack_node **a, t_stack_node **b) //Define a function 
 {
 	t_stack_node	*cheapest_node; //To store the pointer to the cheapest `a` node
 
-	cheapest_node = get_cheapest(*a); 
+	cheapest_node = get_cheapest(*a);
+
+	    if (!cheapest_node) {
+        // Lidar com o caso em que não há nenhum nó mais barato encontrado
+        // Por exemplo, lançar um erro ou retornar silenciosamente
+        return;
+    }
+	 
 	if (cheapest_node->above_median 
 		&& cheapest_node->target_node->above_median) //If both the cheapest `a` node and its target `b` node are above the median
 		rotate_both(a, b, cheapest_node);
@@ -81,7 +76,7 @@ void	sort_stacks(t_stack_node **a, t_stack_node **b) //Define a function that so
 		init_nodes_a(*a, *b); //Iniate all nodes from both stacks
 		move_a_to_b(a, b); //Move the cheapest `a` nodes into a sorted stack `b`, until three nodes are left in stack `a`
 	}
-	sort_3(a);
+	sort_three(a);
 	while (*b) //Until the end of stack `b` is reached
 	{
 		init_nodes_b(*a, *b); //Initiate all nodes from both stacks

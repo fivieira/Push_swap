@@ -12,13 +12,13 @@
 
 NAME = push_swap
 
-SRC = source/handle_error.c source/push_swap.c source/init_stack_a_b.c source/init_stack_b_a.c source/stack_unit.c source/stack_utils.c source/split.c
+SRC = source/handle_errors.c source/push_swap.c source/init_a_to_b.c source/init_b_to_a.c source/stack_init.c source/stack_utils.c source/split.c
 
 COMMANDS:=  source/commands/push.c \
 			source/commands/rev_rotate.c \
 			source/commands/rotate.c \
 			source/commands/sort_stacks.c \
-			source/commands/sort_3.c \
+			source/commands/sort_three.c \
 			source/commands/swap.c 
 
 OBJS = ${SRC:.c=.o}

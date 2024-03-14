@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   so_long.h                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: fivieira <fivieira@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/7 15:12:57 by fivieira          #+#    #+#             */
-/*   Updated: 2023/12/14 15:51:23 by fivieira         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
@@ -31,7 +19,7 @@ typedef struct s_stack_node //A container of data enclosed in {} braces. `s_` fo
 	struct s_stack_node	*prev; //A pointer to the previous node
 }	t_stack_node; //The "shortened name", "t_stack_node". `t_` for type
 
-//***Handle error
+//***Handle errors
 int				error_syntax(char *str_n); 
 int				error_duplicate(t_stack_node *a, int n);
 void			free_stack(t_stack_node **stack);
@@ -39,7 +27,7 @@ void			free_errors(t_stack_node **a);
 
 //***Stack initiation
 void			init_stack_a(t_stack_node **a, char **argv); //Initiate stack `a` before processing
-char			**split(char *s, char c);
+char			**split(char *s, char c); //To handle input of numbers as a string argument, e.g. enclosed in " "
 
 //***Nodes initiation
 void			init_nodes_a(t_stack_node *a, t_stack_node *b); //To prep all nodes for pushing `a` to `b`
@@ -56,7 +44,7 @@ bool			stack_sorted(t_stack_node *stack); //To check whether a stack is sorted
 t_stack_node	*find_min(t_stack_node *stack); //Find the smallest number
 t_stack_node	*find_max(t_stack_node *stack); //Find the biggest number
 
-//Commands
+//***Commands
 void			sa(t_stack_node **a, bool print);
 void			sb(t_stack_node **b, bool print);
 void			ss(t_stack_node **a, t_stack_node **b, bool print);
@@ -69,8 +57,8 @@ void			rrr(t_stack_node **a, t_stack_node **b, bool print);
 void			pa(t_stack_node **a, t_stack_node **b, bool print);
 void			pb(t_stack_node **b, t_stack_node **a, bool print);
 
-//Algorithm
-void			sort_3(t_stack_node **a);
+//***Algorithm
+void			sort_three(t_stack_node **a);
 void			sort_stacks(t_stack_node **a, t_stack_node **b); //Turk algorithm
 
 #endif
